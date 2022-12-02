@@ -3,10 +3,10 @@ defmodule Chirp.Timeline.Post do
   import Ecto.Changeset
 
   schema "posts" do
-    field :author, :string
+    field :author, :string, default: "Annoz"
     field :body, :string
-    field :likes_count, :integer
-    field :reposts_count, :integer
+    field :likes_count, :integer, default: 0
+    field :reposts_count, :integer, default: 0
 
     timestamps()
   end
@@ -15,6 +15,7 @@ defmodule Chirp.Timeline.Post do
   def changeset(post, attrs) do
     post
     |> cast(attrs, [:author, :body, :likes_count, :reposts_count])
-    |> validate_required([:author, :body, :likes_count, :reposts_count])
+    |> validate_required([:body])
+    |> validate_length(:body, min: 2, max: 250)
   end
 end
