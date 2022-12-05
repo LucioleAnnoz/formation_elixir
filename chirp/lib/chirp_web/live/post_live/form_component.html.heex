@@ -9,8 +9,10 @@
     phx-change="validate"
     phx-submit="save">
 
-    <%= text_input f, :body %>
-    <%= error_tag f, :body %>
+    <%= textarea f, :body %>
+    <div class="mt-4">
+      <%= error_tag f, :body %>
+    </div>
 
     <div>
       <%= submit "Save", phx_disable_with: "Saving..." %>
