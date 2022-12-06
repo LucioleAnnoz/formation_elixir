@@ -40,7 +40,7 @@ defmodule ChirpWeb.PostLive.Index do
     post = Timeline.get_post!(id)
     Timeline.delete_post(post)
 
-    send(self(), {:post_deleted, post})
+    # send(self(), {:post_deleted, post})
 
     # {:noreply, assign(socket, :posts, list_posts())}
     {:noreply, socket}
