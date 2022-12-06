@@ -23,21 +23,19 @@ defmodule Chirp.Timeline do
 
   def inc_likes(%Post{id: id}) do
     {1, [post]} =
-        from(p in Post, where: p.id == ^id, select: p)
-        |> Repo.update_all(inc: [likes_count: 1])
+      from(p in Post, where: p.id == ^id, select: p)
+      |> Repo.update_all(inc: [likes_count: 1])
 
     broadcast({:ok, post}, :post_updated)
   end
-
 
   def inc_reposts(%Post{id: id}) do
     {1, [post]} =
-        from(p in Post, where: p.id == ^id, select: p)
-        |> Repo.update_all(inc: [reposts_count: 1])
+      from(p in Post, where: p.id == ^id, select: p)
+      |> Repo.update_all(inc: [reposts_count: 1])
 
     broadcast({:ok, post}, :post_updated)
   end
-
 
   @doc """
   Gets a single post.
@@ -126,8 +124,8 @@ defmodule Chirp.Timeline do
     Phoenix.PubSub.subscribe(Chirp.PubSub, "posts")
   end
 
-
   defp broadcast({:error, _reason} = error, _event), do: error
+
   defp broadcast({:ok, post}, event) do
     Phoenix.PubSub.broadcast(Chirp.PubSub, "posts", {event, post})
 

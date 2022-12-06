@@ -5,7 +5,12 @@ defmodule ChirpWeb.PostLiveTest do
   import Chirp.TimelineFixtures
 
   @create_attrs %{author: "some author", body: "some body", likes_count: 42, reposts_count: 42}
-  @update_attrs %{author: "some updated author", body: "some updated body", likes_count: 43, reposts_count: 43}
+  @update_attrs %{
+    author: "some updated author",
+    body: "some updated body",
+    likes_count: 43,
+    reposts_count: 43
+  }
   @invalid_attrs %{author: nil, body: nil, likes_count: nil, reposts_count: nil}
 
   defp create_post(_) do

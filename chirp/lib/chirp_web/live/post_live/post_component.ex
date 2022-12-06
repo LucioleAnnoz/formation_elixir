@@ -3,7 +3,7 @@ defmodule ChirpWeb.PostLive.PostComponent do
 
   def render(assigns) do
     ~H"""
-    <div class="post border rounded p-1">
+    <div id={"post_#{@id}"} class="post border rounded p-1">
       <div>
         <b>@<%= @post.author %></b>
         <div class="h-32"><%= @post.body %></div>
@@ -29,7 +29,9 @@ defmodule ChirpWeb.PostLive.PostComponent do
           <span class="p-1 rounded bg-green-500">
             <%= live_patch "Edit", to: Routes.post_index_path(@socket, :edit, @post) %>
           </span>
-          <span class="p-1 rounded bg-red-500"><%= link "Delete", to: "#", phx_click: "delete", phx_value_id: @post.id, data: [confirm: "Are you sure?"] %></span>
+          <span class="p-1 rounded bg-red-500">
+            <%= link "Delete", to: "#", phx_click: "delete", phx_value_id: @post.id, data: [confirm: "Are you sure?"] %>
+          </span>
         </div>
       </div>
     </div>
@@ -45,6 +47,4 @@ defmodule ChirpWeb.PostLive.PostComponent do
     Chirp.Timeline.inc_reposts(socket.assigns.post)
     {:noreply, socket}
   end
-
-
 end
