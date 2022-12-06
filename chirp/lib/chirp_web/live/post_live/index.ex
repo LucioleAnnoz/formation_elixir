@@ -8,7 +8,8 @@ defmodule ChirpWeb.PostLive.Index do
   def mount(_params, _session, socket) do
     if connected?(socket), do: Timeline.subscribe()
 
-    {:ok, assign(socket, :posts, list_posts()), temporary_assigns: [posts: []]}
+    # {:ok, assign(socket, :posts, list_posts()), temporary_assigns: [posts: []]}
+    {:ok, assign(socket, :posts, list_posts())}
   end
 
   @impl true
@@ -37,9 +38,12 @@ defmodule ChirpWeb.PostLive.Index do
   @impl true
   def handle_event("delete", %{"id" => id}, socket) do
     post = Timeline.get_post!(id)
-    {:ok, _} = Timeline.delete_post(post)
+    Timeline.delete_post(post)
 
-    {:noreply, assign(socket, :posts, list_posts())}
+    send(self(), {:post_deleted, post})
+
+    # {:noreply, assign(socket, :posts, list_posts())}
+    {:noreply, socket}
   end
 
   @impl true
@@ -49,7 +53,22 @@ defmodule ChirpWeb.PostLive.Index do
 
   @impl true
   def handle_info({:post_updated, post}, socket) do
-    {:noreply, update(socket, :posts, fn posts -> [post | posts] end)}
+    # Case 1 with manual update
+    {:noreply, update(socket, :posts, fn posts ->
+      Enum.map(posts, fn p ->
+        case p.id == post.id do
+          true -> post
+          false -> p
+        end
+      end)
+    end)}
+    # Case 2 with prepend phx-update
+    # {:noreply, update(socket, :posts, fn posts -> [post | posts] end)}
+  end
+
+  @impl true
+  def handle_info({:post_deleted, post}, socket) do
+    {:noreply, assign(socket, :posts, Enum.filter(socket.assigns.posts, fn p -> p.id != post.id end))}
   end
 
   defp list_posts do

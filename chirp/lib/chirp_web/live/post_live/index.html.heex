@@ -2,21 +2,17 @@
 
 <%= if @live_action in [:new, :edit] do %>
   <.modal return_to={Routes.post_index_path(@socket, :index)}>
-    <.live_component
-      module={ChirpWeb.PostLive.FormComponent}
-      id={@post.id || :new}
-      title={@page_title}
-      action={@live_action}
-      post={@post}
-      return_to={Routes.post_index_path(@socket, :index)}
-    />
+    <.live_component module={ChirpWeb.PostLive.FormComponent} id={@post.id || :new} title={@page_title}
+      action={@live_action} post={@post} return_to={Routes.post_index_path(@socket, :index)} />
   </.modal>
-<% end %>
-
-<div id="posts" class="flex flex-col gap-2 mb-4" phx-update="prepend">
-  <%= for post <- @posts do %>
-    <.live_component module={ChirpWeb.PostLive.PostComponent} id={post.id} post={post} />
   <% end %>
-</div>
 
-<span class="p-4 rounded text-bold text-center bg-cyan-600"><%= live_patch "New Post", to: Routes.post_index_path(@socket, :new) %></span>
+    <div id="posts" class="flex flex-col gap-2 mb-4">
+      <%= for post <- @posts do %>
+        <.live_component module={ChirpWeb.PostLive.PostComponent} id={post.id} post={post} />
+        <% end %>
+    </div>
+
+    <span class="p-4 rounded text-bold text-center bg-cyan-600">
+      <%= live_patch "New Post" , to: Routes.post_index_path(@socket, :new) %>
+    </span>
