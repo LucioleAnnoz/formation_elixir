@@ -8,7 +8,6 @@ defmodule ChirpWeb.PostLive.Index do
   def mount(_params, _session, socket) do
     if connected?(socket), do: Timeline.subscribe()
 
-    # {:ok, assign(socket, :posts, list_posts()), temporary_assigns: [posts: []]}
     {:ok, assign(socket, :posts, list_posts())}
   end
 
@@ -40,9 +39,6 @@ defmodule ChirpWeb.PostLive.Index do
     post = Timeline.get_post!(id)
     Timeline.delete_post(post)
 
-    # send(self(), {:post_deleted, post})
-
-    # {:noreply, assign(socket, :posts, list_posts())}
     {:noreply, socket}
   end
 
@@ -53,7 +49,6 @@ defmodule ChirpWeb.PostLive.Index do
 
   @impl true
   def handle_info({:post_updated, post}, socket) do
-    # Case 1 with manual update
     {:noreply, update(socket, :posts, fn posts ->
       Enum.map(posts, fn p ->
         case p.id == post.id do
@@ -62,8 +57,6 @@ defmodule ChirpWeb.PostLive.Index do
         end
       end)
     end)}
-    # Case 2 with prepend phx-update
-    # {:noreply, update(socket, :posts, fn posts -> [post | posts] end)}
   end
 
   @impl true
