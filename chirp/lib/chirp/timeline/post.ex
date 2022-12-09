@@ -3,7 +3,7 @@ defmodule Chirp.Timeline.Post do
   import Ecto.Changeset
 
   schema "posts" do
-    field :author, :string, default: "Annoz"
+    field :author, :string, default: "Public"
     field :body, :string
     field :likes_count, :integer, default: 0
     field :reposts_count, :integer, default: 0
