@@ -24,7 +24,7 @@ Bigger project showing pipe use and functional way of transforming data in elixi
     - [x] add, edit and remove post and broadcast to any active client
     - [x] increase and broadcast like and reposts
 - [ ] Add Authentification
-    - [ ] generate authentification by mail
+    - [x] generate authentification by mail
     - [ ] change Non auth user post's author to public
     - [ ] add route for auth user to create post with their username as author
     - [ ] display only public posts for non auth user
